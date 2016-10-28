@@ -1,0 +1,25 @@
+// CODE GENERATED AUTOMATICALLY BY github.com/Softwee/Anakin
+package client
+
+import (
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"log"
+
+	pb "../rpc"
+)
+
+const addr = "{{.Host}}:{{.Port}}"
+
+func new{{.Service}}Client() *pb.{{.Service}}Client {
+	// set up a connection to the server
+	conn, err := grpc.Dial(addr, grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect: %v", err)
+	}
+	defer conn.Close()
+	
+	return pb.New{{.Service}}Client(conn)
+}
+
+{{.Methods}}

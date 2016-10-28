@@ -1,0 +1,78 @@
+#!/bin/sh
+
+function usage {
+	echo "Usage: $0 --android 1 --ios 1"
+}
+
+function error_exit {
+	echo "Error: $1" 1>&2
+	exit 1
+}
+
+### READ PARAMS
+
+ANDROID=1
+IOS=1
+
+while [[ $# -gt 1 ]]; do
+    case "$1" in
+        --android)
+            ANDROID="$2"
+            shift;;
+        --ios)
+            IOS="$2"
+            shift;;
+        *) ;;
+    esac
+    shift # past argument or value
+done
+
+if [[ "$ANDROID" -eq 0 ]] && [[ "$IOS" -eq 0 ]]; then
+	usage
+	exit 1 # no build needed ¯\_(ツ)_/¯
+fi
+
+# prepare Android environment if build needed
+if [[ "$ANDROID" -eq 1 ]] && [[ -z ${ANDROID_HOME+x} ]]; then
+	read -p "ANDROID_HOME is not set. Enter path to Android SDK: " ANDROID_SDK
+
+	if [[ -z ${ANDROID_SDK+x} ]] ||
+		[[ ! -d "$ANDROID_SDK/platform-tools" ]] ||
+		[[ ! -d "$ANDROID_SDK/tools" ]]
+	then
+		error_exit "Empty path. Cannot ensure that Android SDK installed."
+	fi
+
+	export ANDROID_HOME=$ANDROID_SDK
+	export PATH=$ANDROID_HOME/platform-tools:$PATH
+	export PATH=$ANDROID_HOME/tools:$PATH
+fi
+
+### CHECK CLIENT CODE EXISTS
+
+if [[ ! -f "client.go" ]]; then
+	error_exit "Client code not found. Please, see README.md & use basic Anakin script."
+fi
+
+### CREATE CLIENT BINARIES
+
+echo "Create mobile client binaries..."
+
+# prepare gomobile for client code
+gomobile init
+
+if [[ "$ANDROID" -eq 1 ]]; then
+	echo "Build Android *.aar..."
+	gomobile bind --target=android .
+fi
+
+if [[ "$IOS" -eq 1 ]]; then
+	echo "Build iOS *.framework..."
+	gomobile bind --target=ios .
+fi
+
+echo "Done! Your isomorphic Go app is ready to rule the world!"
+
+### CLIENT BINARIERS ARE READY
+
+exit 0

@@ -1,0 +1,151 @@
+#!/bin/sh
+
+readonly GO_MIN=1.5
+readonly GO_VERSION="$(go version | cut -c14-16)"
+
+readonly OS_VERSION="$(uname -s)"
+readonly CUR_DIR=$(cd -P -- "$(dirname -- "$0")" && pwd -P)
+
+readonly XCODE_PATH="/Applications/Xcode.app/Contents/Developer"
+readonly XCCLT_PATH="/Library/Developer/CommandLineTools"
+
+function error_exit {
+	echo "Error: $1" 1>&2
+	exit 1
+}
+
+### CHECK ENVIRONMENT
+
+# check Go version
+if [[ $(bc <<< "$GO_VERSION < $GO_MIN") -eq 1 ]]; then
+	error_exit "Please, update Go: needed at least $GO_MIN, installed $GO_VERSION."
+fi
+
+# for Mac OS X install Xcode Command Line Tools if needed
+if [[ "$OS_VERSION" == "Darwin" ]] && [[ "$(xcode-select -p)" != "$XCODE_PATH" ]]; then
+	echo "Xcode Command Line Tools not found, install..."
+	xcode-select --install
+
+	if [ "$(xcode-select -p)" != "$XCCLT_PATH" ] && [ "$(xcode-select -p)" != "$XCODE_PATH" ]; then
+		error_exit "Failed install Xcode Command Line Tools."
+	fi
+fi
+
+# set GOPATH if it's not already set
+if [[ -z ${GOPATH+x} ]]; then
+	export GOPATH=$HOME/go
+	export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+fi
+
+echo "Get necessary Go packages..."
+go get google.golang.org/grpc
+go get -u github.com/golang/protobuf/{proto,protoc-gen-go}
+go get golang.org/x/mobile/cmd/gomobile
+
+### READ PARAMS
+
+function usage {
+	echo "Usage: $0 -P <proto> -O <output> -h <host> -p <port> -android -ios"
+}
+
+PROTO=
+OUTPUT=$CUR_DIR/gen
+HOST=localhost
+PORT=50051
+ANDROID=0
+IOS=0
+
+while [[ $# -gt 1 ]]; do
+    case "$1" in
+		 -P | --proto) PROTO="$2"; shift;;
+		-O | --output) OUTPUT="$2"; shift;;
+		  -h | --host) HOST="$2"; shift;;
+		  -p | --port) PORT="$2"; shift;;
+		     -android) ANDROID=1;;
+			     -ios) IOS=1;;
+			       -*) usage; exit 1;;
+			        *) ;; # terminate while loop
+    esac
+    shift
+done
+
+if [[ ! -f "$PROTO" ]]; then
+	error_exit "Proto-file $PROTO not found."
+fi
+
+### GENERATE GRPC RELATED STUFF
+
+PROTO_URL="https://github.com/google/protobuf/releases/latest"
+
+PROTOC_BUILD=
+
+if [[ "$OS_VERSION" == "Darwin" ]]; then	# Mac OS X
+	PROTOC_BUILD="osx-$(uname -m)"
+elif [[ "$OS_VERSION" == "Linux" ]]; then	# Linux
+	PROTOC_BUILD="linux-$(uname -m)"
+elif [[ "$OS_VERSION" == CYGWIN* ]] ||		# Windows
+	 [[ "$OS_VERSION" == MINGW32* ]] ||
+	 [[ "$OS_VERSION" == MSYS* ]]
+then
+	PROTOC_BUILD="win32"
+else
+	error_exit "
+		Cannot find necessary protoc utility for your OS type.
+		Please check: $PROTO_URL
+		If latest release has, please open issue on tool repo page:
+		https://github.com/Softwee/Anakin
+	"
+fi
+
+PROTOC_VERSION="$(curl $PROTO_URL | cut -c85-89)"
+PROTOC_URL="https://github.com/google/protobuf/releases/download/v$PROTOC_VERSION/"
+PROTOC_ZIP="protoc-$PROTOC_VERSION-$PROTOC_BUILD.zip"
+
+echo "Download protoc utility..."
+curl -O -J -L $PROTOC_URL$PROTOC_ZIP
+sudo apt-get install unzip
+unzip $PROTOC_ZIP -d protoc
+rm $PROTOC_ZIP
+
+GEN_SERVER=$OUTPUT/server
+GEN_CLIENT=$OUTPUT/client
+GEN_RPC=$OUTPUT/rpc
+GEN_RPC_PROTO=$GEN_RPC/rpc.proto
+
+echo "Generate code for gRPC..."
+mkdir -p $GEN_SERVER $GEN_CLIENT $GEN_RPC
+cp $PROTO $GEN_RPC_PROTO
+./protoc/bin/protoc -I=$GEN_RPC --go_out=$GEN_RPC $GEN_RPC_PROTO
+rm -rf protoc
+
+### GENERATE SERVER & CLIENT CODE
+
+echo "Generate server & client code..."
+go run src/gen.go $GEN_RPC_PROTO $HOST $PORT
+mv server.go $GEN_SERVER/server.go
+mv client.go $GEN_CLIENT/client.go
+
+### CREATE CLIENT BINARIES
+
+function build_binaries {
+	sh $GEN_CLIENT/anakin-build --android $ANDROID --ios $IOS
+}
+
+cp src/anakin-build $GEN_CLIENT/anakin-build
+
+if [[ "$ANDROID" -eq 0 ]] && [[ "$IOS" -eq 0 ]]; then
+	echo "
+		Done! Server & client code are ready in output directory:
+		$OUTPUT
+		Binaries build ignored, you can do this later as follows:
+		sh anakin-build [--android 1] [--ios 1]
+		from $GEN_CLIENT directory.
+	"
+	exit 0 # no build needed ¯\_(ツ)_/¯
+fi
+
+( cd $GEN_CLIENT && build_binaries )
+
+### CLIENT BINARIERS ARE READY
+
+exit 0

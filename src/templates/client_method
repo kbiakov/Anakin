@@ -1,0 +1,6 @@
+// TODO: ADD IMPLEMENTATION BELOW
+func {{.Method}}(req *pb.{{.Request}}) (*pb.{{.Response}}, error) {
+	c := new{{.Service}}Client()
+	res := c.{{.Method}}(context.Background(), &req)
+	return res
+}

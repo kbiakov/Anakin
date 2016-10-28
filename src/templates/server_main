@@ -1,0 +1,30 @@
+// CODE GENERATED AUTOMATICALLY BY github.com/Softwee/Anakin
+package main
+
+import (
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"net"
+	"log"
+
+	pb "../rpc"
+)
+
+const port = ":{{.Port}}"
+
+type {{.Service}}Server struct {}
+
+{{.Methods}}
+
+func main() {
+	lis, err := net.Listen("tcp", port)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+
+	s := grpc.NewServer()
+	pb.Register{{.Service}}Server(s, &{{.Service}}Server{})
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+}
