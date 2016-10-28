@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"io/ioutil"
-	"text/template"
 	"bytes"
+	"fmt"
+	"io/ioutil"
+	"os"
+	"text/template"
 
 	p "./parser"
 )
@@ -26,16 +26,16 @@ func methodsToPlaintext(serviceName string, rpcs []p.Rpc, methodTpl *template.Te
 	for i, rpc := range rpcs {
 		var method bytes.Buffer
 
-		methodTpl.Execute(&method, map[string]string {
-			"Service": serviceName,
-			"Method": rpc.Name,
-			"Request": rpc.Req,
+		methodTpl.Execute(&method, map[string]string{
+			"Service":  serviceName,
+			"Method":   rpc.Name,
+			"Request":  rpc.Req,
 			"Response": rpc.Res,
 		})
 
 		methods.Write(method.Bytes())
-		
-		if i < len(rpcs) - 1 {
+
+		if i < len(rpcs)-1 {
 			methods.Write([]byte("\n"))
 		}
 	}
@@ -51,11 +51,11 @@ func execTemplate(filename string, service *p.Service, mainTpl *template.Templat
 
 	methodsPlaintext := methodsToPlaintext(service.Name, service.Rpcs, methodTpl)
 
-	mainTpl.Execute(file, map[string]string {
+	mainTpl.Execute(file, map[string]string{
 		"Service": service.Name,
 		"Methods": methodsPlaintext,
-		"Host": host,
-		"Port": port,
+		"Host":    host,
+		"Port":    port,
 	})
 }
 

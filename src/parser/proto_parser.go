@@ -1,39 +1,43 @@
 package parser
 
 import (
-	"os"
 	"bufio"
-	"strings"
-	"regexp"
 	"fmt"
+	"os"
+	"regexp"
+	"strings"
 )
 
 const (
-	EntityService	= "service "
-	EntityMessage	= "service "
-	EntityRpc	= "rpc "
+	entityService = "service "
+	entityMessage = "service "
+	entityRpc     = "rpc "
 
-	FeatureBrOpen	= " \\("
-	FeatureBrClose	= "\\) "
-	FeatureReturns	= "returns"
+	featureBrOpen  = " \\("
+	featureBrClose = "\\) "
+	featureReturns = "returns"
 )
 
+// Describes structure of proto-file (servers & messages).
 type Proto struct {
 	Services []Service
 	Messages []string
 }
 
+// Service has name & rpc-methods.
 type Service struct {
-	Name	string
-	Rpcs	[]Rpc
+	Name string
+	Rpcs []Rpc
 }
 
+// RPC is combination of name, request & response.
 type Rpc struct {
-	Name	string
-	Req	string
-	Res	string
+	Name string
+	Req  string
+	Res  string
 }
 
+// Parse proto-file by presented path.
 func ParseProto(path string) (*Proto, error) {
 	file, err := os.Open(path)
 	if err != nil {
@@ -84,11 +88,11 @@ func searchSurrounded(openFeature string, closeFeature string, str string) (bool
 }
 
 func searchService(str string) (bool, string) {
-	return searchSurrounded(EntityService, " {", str)
+	return searchSurrounded(entityService, " {", str)
 }
 
 func searchMessage(str string) (bool, string) {
-	return searchSurrounded(EntityMessage, " {", str)
+	return searchSurrounded(entityMessage, " {", str)
 }
 
 func selectSurrounded(openFeature string, closeFeature string, str string) string {
@@ -97,7 +101,7 @@ func selectSurrounded(openFeature string, closeFeature string, str string) strin
 }
 
 func isFoundRpc(str string) bool {
-	return strings.HasPrefix(strings.TrimSpace(str), EntityRpc)
+	return strings.HasPrefix(strings.TrimSpace(str), entityRpc)
 }
 
 func isStopParseEntity(str string) bool {
@@ -105,13 +109,13 @@ func isStopParseEntity(str string) bool {
 }
 
 func parseRpc(str string) *Rpc {
-	req := selectSurrounded(FeatureBrOpen, FeatureBrClose + FeatureReturns, str)
-	res := selectSurrounded(FeatureReturns + FeatureBrOpen, FeatureBrClose, str)
-	name := selectSurrounded(EntityRpc, FeatureBrOpen + req, str)
+	req := selectSurrounded(featureBrOpen, featureBrClose+featureReturns, str)
+	res := selectSurrounded(featureReturns+featureBrOpen, featureBrClose, str)
+	name := selectSurrounded(entityRpc, featureBrOpen+req, str)
 
 	return &Rpc{
 		Name: name,
-		Req: req,
-		Res: res,
+		Req:  req,
+		Res:  res,
 	}
 }
