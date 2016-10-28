@@ -25,21 +25,21 @@ Mobile binaries build stage may fail by different reasons and you may want to go
 anakin -P myrpc.proto [-O output_dir] [-h localhost] [-p 50051] [-android] [-ios]
 ```
 
-Flags:
--P | --proto <proto>	(required) path to ```*.proto```-file
--O | --output <output>	(optional) path to output directory, default: ```/gen```
--h | --host <host>		(optional) server host, default: localhost
--p | --port <port>		(optional) server port, default: 50051
--android 				(optional) is Android build needed, default: false
--ios 					(optional) is iOS build needed, default: false
+<b>Flags</b>:<br>
+```-P | --proto <proto>``` (required) path to ```*.proto```-file<br>
+```-O | --output <output>``` (optional) path to output directory, default: ```/gen```<br>
+```-h | --host <host>``` (optional) server host, default: localhost<br>
+```-p | --port <port>``` (optional) server port, default: 50051<br>
+```-android``` (optional) is Android build needed, default: false<br>
+```-ios``` (optional) is iOS build needed, default: false<br>
 
 ```
 anakin-build [--android 1] [--ios 1]
 ```
 
-Flags:
---android 1				(optional) is Android build needed, default: 1 (true)
---ios 1 				(optional) is iOS build needed, default: 1 (true)
+<b>Flags</b>:<br>
+```--android 1``` (optional) is Android build needed, default: 1 (true)<br>
+```--ios 1``` (optional) is iOS build needed, default: 1 (true)<br>
 
 ## Author
 ### [Kirill Biakov](https://github.com/kbiakov)
