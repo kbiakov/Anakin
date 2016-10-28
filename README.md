@@ -1,6 +1,7 @@
 # Anakin
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/Softwee/Anakin)](https://goreportcard.com/report/github.com/Softwee/Anakin)
+[![Coverage Status](https://coveralls.io/repos/github/Softwee/Anakin/badge.svg?branch=master)](https://coveralls.io/github/Softwee/Anakin?branch=master)
 
 Codegeneration tool for isomorphic server and mobile Go apps backed by gRPC & Protobuf. Share code between your backend, Android & iOS app!
 
