@@ -46,7 +46,7 @@ anakin-build [--android 1] [--ios 1]
 
 ## License
 ```
-Copyright (c) 2016 Softwee
+GNU General Public Licence 3.0
 
-![GPL-3.0 License](https://github.com/Softwee/Anakin/blob/master/LICENSE)
+Copyright (c) 2016 Softwee
 ```
