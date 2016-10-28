@@ -7,8 +7,14 @@ go:
   - tip
 
 before_install:
-    - go get github.com/mattn/goveralls
-    - go get golang.org/x/tools/cmd/cover
+  - go get -v github.com/axw/gocov/gocov
+  - go get -v github.com/mattn/goveralls
+
+install:
+  - go get -d -t -v ./...
+  - go install -v
 
 script:
-    - $HOME/gopath/bin/goveralls -service=travis-ci
+  - go vet ./...
+  - go test -v -covermode=count -coverprofile=coverage.out
+  - $HOME/gopath/bin/goveralls -coverprofile=coverage.out -service=travis-ci
