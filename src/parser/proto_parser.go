@@ -18,7 +18,7 @@ const (
 	featureReturns = "returns"
 )
 
-// Describes structure of proto-file (servers & messages).
+// Proto describes structure of proto-file (servers & messages).
 type Proto struct {
 	Services []Service
 	Messages []string
@@ -30,14 +30,14 @@ type Service struct {
 	Rpcs []Rpc
 }
 
-// RPC is combination of name, request & response.
+// Rpc is combination of name, request & response.
 type Rpc struct {
 	Name string
 	Req  string
 	Res  string
 }
 
-// Parse proto-file by presented path.
+// ParseProto parses proto-file by presented path.
 func ParseProto(path string) (*Proto, error) {
 	file, err := os.Open(path)
 	if err != nil {
