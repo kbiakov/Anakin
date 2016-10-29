@@ -14,7 +14,7 @@ Mobile binaries build stage may fail by different reasons and you may want to go
 ![Anakin plugin stages](http://i64.tinypic.com/1f4uh.png)
 
 ## Required
-1. Go >=1.5.<br>
+1. Go 1.5 and higher.<br>
 
 2. Xcode Command Line Tools (Mac OS X only, will be installed if needed).<br>
 
