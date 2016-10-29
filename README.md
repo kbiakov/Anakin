@@ -9,7 +9,7 @@ At the first stage, it just generates from your ```*.proto``` (with defined serv
 
 Next <b>Anakin</b> parses ```*.proto```-file to extract RPC-methods and messages, takes templates for client and server & generates similar Go code. After that it builds binaries for Android (```*.aar```) and iOS (```*.framework```) using ```gomobile```.
 
-Mobile binaries build stage may fail by different reasons and you may want to go back again later, when environment will be ready. Also build stage may be ignored by you if want to make changes in generated code. Anyway <b>Anakin</b> has another ```anakin-build``` script for this purpose.
+Mobile binaries build stage may fail by different reasons and you may want to go back again later when environment will be ready. Also you can ignore build stage if you want to make some changes in generated code. Anyway <b>Anakin</b> has another ```anakin-build``` script inside for this purpose, which automatically copied for generated ```$YOUR_OUTPUT/client``` directory with other source files when you run original ```anakin``` script.
 
 ![Anakin plugin stages](http://i64.tinypic.com/1f4uh.png)
 
