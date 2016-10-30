@@ -11,7 +11,7 @@ import (
 
 // TestLoadTemplate tests LoadTemplate by name for existing template.
 func TestLoadTemplate(t *testing.T) {
-	testLoadTemplateWithPath := func(t *testing.T, tplName string, ) {
+	testLoadTemplateWithPath := func(t *testing.T, tplName string) {
 		if loadTestTemplate(tplName) == nil {
 			t.Errorf("Could not load %s template", tplName)
 		}
@@ -76,7 +76,7 @@ func TestGenerateCode(t *testing.T) {
 	tplClientMain := loadTestTemplate("client_main")
 	tplClientMethod := loadTestTemplate("client_method")
 
-	proto, err := p.ParseProto("../parser/example.proto")
+	proto, err := p.ParseProto("../parser/test.proto")
 	if err != nil {
 		t.Errorf("Error parsing proto-file: %s", err.Error())
 	}

@@ -16,10 +16,10 @@ func main() {
 	port = os.Args[3]
 
 	tplsPath := "src/templates/"
-	tplServerMain := g.LoadTemplate(tplsPath+"server_main")
-	tplServerMethod := g.LoadTemplate(tplsPath+"server_method")
-	tplClientMain := g.LoadTemplate(tplsPath+"client_main")
-	tplClientMethod := g.LoadTemplate(tplsPath+"client_method")
+	tplServerMain := g.LoadTemplate(tplsPath + "server_main")
+	tplServerMethod := g.LoadTemplate(tplsPath + "server_method")
+	tplClientMain := g.LoadTemplate(tplsPath + "client_main")
+	tplClientMethod := g.LoadTemplate(tplsPath + "client_method")
 
 	proto, err := p.ParseProto(protoPath)
 	if err != nil {

@@ -9,7 +9,7 @@ import (
 
 // TestParseProto tests ParseProto with valid path.
 func TestParseProto(t *testing.T) {
-	examplePath := "example.proto"
+	examplePath := "test.proto"
 	exampleRpc := createExampleRpc()
 	exampleProto := Proto{
 		Services: []Service{{
