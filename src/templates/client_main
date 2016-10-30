@@ -4,12 +4,23 @@ package client
 import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
+	"sync"
 	"log"
 
 	pb "../rpc"
 )
 
 const addr = "{{.Host}}:{{.Port}}"
+
+var client *pb.{{.Service}}Client
+
+func Get{{.Service}}ClientInstance() *pb.{{.Service}}Client {
+    sync.Once.Do(func() {
+        client = &new{{.Service}}Client()
+    })
+
+    return client
+}
 
 func new{{.Service}}Client() *pb.{{.Service}}Client {
 	// set up a connection to the server

@@ -1,4 +1,4 @@
 // TODO: ADD IMPLEMENTATION BELOW
 func (s *{{.Service}}Server) {{.Method}}(ctx context.Context, in *pb.{{.Request}}) (*pb.{{.Response}}, error) {
-        return &pb.{{.Response}}{}, nil
+    return &pb.{{.Response}}{}, nil
 }
