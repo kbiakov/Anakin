@@ -10,31 +10,33 @@ import (
 
 const (
 	entityService = "service "
-	entityMessage = "service "
+	entityMessage = "message "
 	entityRpc     = "rpc "
+	entityOpen    = " {"
+	entityClose   = "}"
 
-	featureBrOpen  = " \\("
-	featureBrClose = "\\) "
+	featureBrOpen  = " ("
+	featureBrClose = ") "
 	featureReturns = "returns"
 )
 
 // Proto describes structure of proto-file (servers & messages).
 type Proto struct {
-	Services []Service
-	Messages []string
+	Services []Service `json:"services"`
+	Messages []string  `json:"messages"`
 }
 
 // Service has name & rpc-methods.
 type Service struct {
-	Name string
-	Rpcs []Rpc
+	Name string `json:"name"`
+	Rpcs []Rpc  `json:"rpcs"`
 }
 
 // Rpc is combination of name, request & response.
 type Rpc struct {
-	Name string
-	Req  string
-	Res  string
+	Name string `json:"name"`
+	Req  string `json:"req"`
+	Res  string `json:"res"`
 }
 
 // ParseProto parses proto-file by presented path.
@@ -79,7 +81,9 @@ func ParseProto(path string) (*Proto, error) {
 }
 
 func searchSurrounded(openFeature string, closeFeature string, str string) (bool, string) {
-	regex := fmt.Sprintf("(?:%s)(.*)(?:%s)", openFeature, closeFeature)
+	fmtOpenFeature := screenBrackets(openFeature)
+	fmtCloseFeature := screenBrackets(closeFeature)
+	regex := fmt.Sprintf("(?:%s)(.*)(?:%s)", fmtOpenFeature, fmtCloseFeature)
 	trimmedStr := strings.TrimSpace(str)
 	if re := regexp.MustCompile(regex); re.MatchString(trimmedStr) {
 		return true, re.FindStringSubmatch(trimmedStr)[1]
@@ -88,11 +92,11 @@ func searchSurrounded(openFeature string, closeFeature string, str string) (bool
 }
 
 func searchService(str string) (bool, string) {
-	return searchSurrounded(entityService, " {", str)
+	return searchSurrounded(entityService, entityOpen, str)
 }
 
 func searchMessage(str string) (bool, string) {
-	return searchSurrounded(entityMessage, " {", str)
+	return searchSurrounded(entityMessage, entityOpen, str)
 }
 
 func selectSurrounded(openFeature string, closeFeature string, str string) string {
@@ -105,17 +109,21 @@ func isFoundRpc(str string) bool {
 }
 
 func isStopParseEntity(str string) bool {
-	return strings.TrimSpace(str) == "}"
+	return strings.TrimSpace(str) == entityClose
 }
 
 func parseRpc(str string) *Rpc {
 	req := selectSurrounded(featureBrOpen, featureBrClose+featureReturns, str)
 	res := selectSurrounded(featureReturns+featureBrOpen, featureBrClose, str)
-	name := selectSurrounded(entityRpc, featureBrOpen+req, str)
+	name := selectSurrounded(entityRpc, featureBrOpen+req+featureBrClose+featureReturns, str)
 
 	return &Rpc{
 		Name: name,
 		Req:  req,
 		Res:  res,
 	}
+}
+
+func screenBrackets(str string) string {
+	return strings.Replace(strings.Replace(str, "(", "\\(", -1), ")", "\\)", -1)
 }
