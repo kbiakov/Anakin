@@ -1,6 +1,6 @@
 language: go
 
-sudo: true
+sudo: false
 
 go:
   - 1.5
@@ -9,16 +9,7 @@ go:
   - tip
 
 before_install:
-  - go get github.com/wadey/gocovmerge
   - go get github.com/mattn/goveralls
-  - go get golang.org/x/tools/cmd/cover
-
-install:
-  - go get -d -v ./...
 
 script:
-  - go test -short -v ./...
-
-after_success:
-  - sh .gen_coverage.sh
-  - goveralls -coverprofile=full_cov.out -service=travis-ci
+  - $HOME/gopath/bin/goveralls -service=travis-ci
