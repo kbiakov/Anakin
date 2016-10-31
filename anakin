@@ -55,7 +55,7 @@ PORT=50051
 ANDROID=0
 IOS=0
 
-while [[ $# -gt 1 ]]; do
+while [[ $# -gt 0 ]]; do
     case "$1" in
 		 -P | --proto) PROTO="$2"; shift;;
 		-O | --output) OUTPUT="$2"; shift;;
