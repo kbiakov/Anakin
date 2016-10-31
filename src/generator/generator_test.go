@@ -63,7 +63,7 @@ func TestMethodsToPlaintext(t *testing.T) {
 		"// TODO: ADD ADDITIONAL INFO BELOW\n"+
 			"func %s(req *pb.%s) (*pb.%s, error) {\n"+
 			"    c := Get%sClientInstance()\n"+
-			"    res := c.%s(context.Background(), &req)\n"+
+			"    res := &c.%s(context.Background(), &req)\n"+
 			"    return res\n"+
 			"}",
 		rpc.Name, rpc.Req, rpc.Res, serviceName, rpc.Name))

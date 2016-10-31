@@ -115,7 +115,7 @@ GEN_RPC_PROTO=$GEN_RPC/rpc.proto
 echo "Generate code for gRPC..."
 mkdir -p $GEN_SERVER $GEN_CLIENT $GEN_RPC
 cp $PROTO $GEN_RPC_PROTO
-./protoc/bin/protoc -I=$GEN_RPC --go_out=$GEN_RPC $GEN_RPC_PROTO
+./protoc/bin/protoc -I $GEN_RPC $GEN_RPC_PROTO --go_out=plugins=grpc:$GEN_RPC
 rm -rf protoc
 
 ### GENERATE SERVER & CLIENT CODE

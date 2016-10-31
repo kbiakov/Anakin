@@ -1,6 +1,6 @@
 // TODO: ADD ADDITIONAL INFO BELOW
 func {{.Method}}(req *pb.{{.Request}}) (*pb.{{.Response}}, error) {
     c := Get{{.Service}}ClientInstance()
-    res := c.{{.Method}}(context.Background(), &req)
+    res := &c.{{.Method}}(context.Background(), &req)
     return res
 }

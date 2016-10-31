@@ -14,7 +14,7 @@ const addr = "{{.Host}}:{{.Port}}"
 
 var client *pb.{{.Service}}Client
 
-func Get{{.Service}}ClientInstance() *pb.{{.Service}}Client {
+func Get{{.Service}}ClientInstance() pb.{{.Service}}Client {
     sync.Once.Do(func() {
         client = &new{{.Service}}Client()
     })
@@ -30,7 +30,7 @@ func new{{.Service}}Client() *pb.{{.Service}}Client {
 	}
 	defer conn.Close()
 	
-	return pb.New{{.Service}}Client(conn)
+	return &pb.New{{.Service}}Client(conn)
 }
 
 {{.Methods}}
