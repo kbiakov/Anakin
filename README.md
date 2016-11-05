@@ -1,4 +1,4 @@
-# Anakin [![GoDoc](https://godoc.org/github.com/Softwee/Anakin?status.svg)](https://godoc.org/github.com/Softwee/Anakin) [![Go Report Card](https://goreportcard.com/badge/github.com/Softwee/Anakin)](https://goreportcard.com/report/github.com/Softwee/Anakin)
+# Anakin [![GoDoc](https://godoc.org/github.com/Softwee/Anakin?status.svg)](https://godoc.org/github.com/Softwee/Anakin) [![Go Report Card](https://goreportcard.com/badge/github.com/Softwee/Anakin)](https://goreportcard.com/report/github.com/Softwee/Anakin) [![Build Status](https://travis-ci.org/Softwee/Anakin.svg?branch=master)](https://travis-ci.org/Softwee/Anakin)
 
 Codegeneration tool for isomorphic server and mobile Go apps backed by gRPC & Protobuf. Share code between your backend, Android & iOS app!
 
@@ -26,20 +26,20 @@ anakin -P myrpc.proto [-O output_dir] [-h localhost] [-p 50051] [-android] [-ios
 ```
 
 <b>Flags</b>:<br>
-```-P | --proto <proto>``` (required) path to ```*.proto```-file<br>
-```-O | --output <output>``` (optional) path to output directory, default: ```/gen```<br>
-```-h | --host <host>``` (optional) server host, default: localhost<br>
-```-p | --port <port>``` (optional) server port, default: 50051<br>
-```-android``` (optional) is Android build needed, default: false<br>
-```-ios``` (optional) is iOS build needed, default: false<br>
+```-P | --proto <proto>``` *(required)* path to ```*.proto```-file<br>
+```-O | --output <output>``` *(optional)* path to output directory, default: ```/gen```<br>
+```-h | --host <host>``` *(optional)* server host, default: localhost<br>
+```-p | --port <port>``` *(optional)* server port, default: 50051<br>
+```-android``` *(optional)* is Android build needed, default: false<br>
+```-ios``` *(optional)* is iOS build needed, default: false<br>
 
 ```
 anakin-build [--android 1] [--ios 1]
 ```
 
 <b>Flags</b>:<br>
-```--android 1``` (optional) is Android build needed, default: 1 (true)<br>
-```--ios 1``` (optional) is iOS build needed, default: 1 (true)<br>
+```--android 1``` *(optional)* is Android build needed, default: 1 (true)<br>
+```--ios 1``` *(optional)* is iOS build needed, default: 1 (true)<br>
 
 ## Author
 ### [Kirill Biakov](https://github.com/kbiakov)
