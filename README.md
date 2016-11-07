@@ -1,4 +1,4 @@
-# Anakin [![GoDoc](https://godoc.org/github.com/Softwee/Anakin?status.svg)](https://godoc.org/github.com/Softwee/Anakin) [![Go Report Card](https://goreportcard.com/badge/github.com/Softwee/Anakin)](https://goreportcard.com/report/github.com/Softwee/Anakin) [![Build Status](https://travis-ci.org/Softwee/Anakin.svg?branch=master)](https://travis-ci.org/Softwee/Anakin)
+# Anakin [![GoDoc](https://godoc.org/github.com/Softwee/Anakin?status.svg)](https://godoc.org/github.com/Softwee/Anakin) [![Go Report Card](https://goreportcard.com/badge/github.com/Softwee/Anakin)](https://goreportcard.com/report/github.com/Softwee/Anakin) [![Build Status](https://travis-ci.org/Softwee/Anakin.svg?branch=master)](https://travis-ci.org/Softwee/Anakin) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Anakin-blue.svg?style=true)](https://android-arsenal.com/details/1/4625)
 
 Codegeneration tool for isomorphic server and mobile Go apps backed by gRPC & Protobuf. Share code between your backend, Android & iOS app!
 
