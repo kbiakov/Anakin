@@ -1,6 +1,6 @@
-# Anakin [![GoDoc](https://godoc.org/github.com/Softwee/Anakin?status.svg)](https://godoc.org/github.com/Softwee/Anakin) [![Go Report Card](https://goreportcard.com/badge/github.com/Softwee/Anakin)](https://goreportcard.com/report/github.com/Softwee/Anakin) [![Build Status](https://travis-ci.org/Softwee/Anakin.svg?branch=master)](https://travis-ci.org/Softwee/Anakin) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Anakin-blue.svg?style=true)](https://android-arsenal.com/details/1/4625)
+# Anakin [![GoDoc](https://godoc.org/github.com/Softwee/Anakin?status.svg)](https://godoc.org/github.com/Softwee/Anakin) [![Go Report Card](https://goreportcard.com/badge/github.com/Softwee/Anakin)](https://goreportcard.com/report/github.com/Softwee/Anakin) [![Maintainability](https://api.codeclimate.com/v1/badges/9f7e630f0ab78a73ccca/maintainability)](https://codeclimate.com/github/kbiakov/Anakin/maintainability) [![Build Status](https://travis-ci.org/Softwee/Anakin.svg?branch=master)](https://travis-ci.org/Softwee/Anakin) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Anakin-blue.svg?style=true)](https://android-arsenal.com/details/1/4625)
 
-Codegeneration tool for isomorphic server and mobile Go apps backed by gRPC & Protobuf. Share code between your backend, Android & iOS app!
+Codegeneration tool for isomorphic server and mobile Go apps with gRPC & Protobuf. Share code between your backend, Android & iOS app!
 
 ## Description
 <b>Anakin</b> takes care about some routine tasks and helps to create shared code between client (mobile apps) & server app written in Go and backed by gRPC & Protobuf. So, how it works?
